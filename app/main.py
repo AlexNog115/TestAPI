@@ -1,11 +1,16 @@
 from fastapi import FastAPI
 
 
-
+from app.config import settings
 
 
 #Creat Fastapi application
-app = FastAPI()
+app = FastAPI(
+    title = settings.APP_NAME,
+    version = settings.APP_VERSION,
+    description = "API for users management with PostgreSQL",
+    debug = settings.DEBUG
+)
 
 
 
@@ -15,8 +20,8 @@ async def root():
     Root endpoint, return basic infomation for the API
     """
     return{
-        "message": "Backend for users management with PostgreSQL",
-        "version": "aqui va la version",
+        "message": settings.APP_NAME,
+        "version": settings.APP_VERSION,
         "documentation": "/docs",
     }
 
