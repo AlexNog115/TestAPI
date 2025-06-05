@@ -1,6 +1,8 @@
-# Archivo de entorno
-.env
+# Entorno virtual
 venv/
+.venv/
+env/
+ENV/
 
 # Archivos generados por Python
 _pycache_/
@@ -23,3 +25,26 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Archivos de entorno
+.env
+
+# Logs
+*.log
+
+# Archivos de cobertura
+.coverage
+htmlcov/
+
+# Carpetas IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Base de datos SQLite (si se usa localmente)
+*.sqlite3
+
+# Archivos temporales
+.DS_Store
+Thumbs.db
