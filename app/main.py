@@ -1,8 +1,16 @@
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
+import logging
 
 from app.config import settings
 
+
+#Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 #Creat Fastapi application
 app = FastAPI(
@@ -12,7 +20,22 @@ app = FastAPI(
     debug = settings.DEBUG
 )
 
+@app.on_event("startup")
+async def startup_event():
+    logger.info("Application started")
 
+@app.on_event("shutdown")
+async def shutdown_event():
+    logger.info("Application stopped")
+
+#CORS Configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = ["*"], 
+    allow_credentials = True,
+    allow_methods ="*",
+    allow_headers = ["*"],
+)
 
 @app.get("/", tags=["Root"])
 async def root():

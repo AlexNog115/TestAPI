@@ -5,7 +5,7 @@ env/
 ENV/
 
 # Archivos generados por Python
-_pycache_/
+__pycache__/
 *.py[cod]
 *$py.class
 *.so
