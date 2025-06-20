@@ -20,6 +20,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 from app.database import Base
 from app.models.user import User
 from app.models.refresh_token import RefreshToken
+from app.models.roles import Role
 from app.config import settings
 
 # this is the Alembic Config object, which provides

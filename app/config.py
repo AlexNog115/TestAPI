@@ -21,9 +21,13 @@ class Settings(BaseSettings):
     
     # Security configuration
     SECRET_KEY: str = os.getenv("SECRET_KEY", "clave_secreta_predeterminada")
-    ALGORITHM: str = os.getenv("ALGORITHM", "HS256")
+    ALGORITHM: str = os.getenv("ALGORITHM", "RS256")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
     REFRESH_TOKEN_EXPIRE_HOURS: int = int(os.getenv("REFRESH_TOKEN_EXPIRE_HOURS", "24"))
+
+    #RSA Keys configuration for JWT signing
+    RSA_PRIVATE_KEY_PATH: str = os.getenv("RSA_PRIVATE_KEYS_PATH")
+    RSA_PUBLIC_KEY_PATH: str = os.getenv("RSA_PUBLIC_KEY_PATH")
     
     model_config = ConfigDict(
         env_file=".env",

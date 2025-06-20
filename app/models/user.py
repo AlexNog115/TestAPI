@@ -21,7 +21,7 @@ class User(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     #Relationship to RefreshToken
-    refresh_tokens = relationship("RefreshToken", back_populates="users", lazy="select")
+    refresh_tokens = relationship("RefreshToken", back_populates="user", lazy="select")
 
     def __rep__(self):
         return f"<User {self.username}>"

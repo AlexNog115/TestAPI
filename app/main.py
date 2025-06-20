@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 
+from app.routes import auth_router
 from app.config import settings
 
 
@@ -36,6 +37,9 @@ app.add_middleware(
     allow_methods ="*",
     allow_headers = ["*"],
 )
+
+# Include routers
+app.include_router(auth_router)
 
 @app.get("/", tags=["Root"])
 async def root():
