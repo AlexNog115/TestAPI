@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.schemas.user import UserCreate
 from app.services.user import create_user
-from app.schemas.auth import Login
-from app.services.auth import generate_user_token
+from app.schemas.auth import Login, Token
+from app.services.auth import generate_user_token, generate_user_login
 
 router = APIRouter(
     prefix="/api/auth",
@@ -36,5 +36,17 @@ async def user_login(
     """
     log in the user and retrieve their athentication token and profile attributes
     """
-    access_token , refresh_token, user = generate_user_token(db,form_data)
+    access_token , refresh_token, user = generate_user_login(db,form_data)
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer", "user":user}
+
+@router.post("/token", response_model=Token, status_code=status.HTTP_200_OK)
+async def get_token(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+):
+    """
+    get access token and refresh token
+    """
+    
+    access_token , refresh_token = generate_user_token(db, form_data)
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}

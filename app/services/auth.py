@@ -84,9 +84,9 @@ def generate_and_store_tokens(
 
     return access_token, refresh_token
 
-def generate_user_token(db: Session, form_data: OAuth2PasswordRequestForm) -> tuple[str, str, User]:
+def generate_user_login(db: Session, form_data: OAuth2PasswordRequestForm) -> tuple[str, str, User]:
     """
-    Authenticate a user and generate access and refresh token
+    Authenticate a user and generate access and refresh token and user information
     """
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -111,3 +111,32 @@ def generate_user_token(db: Session, form_data: OAuth2PasswordRequestForm) -> tu
     )
 
     return access_token, refresh_token, user
+
+def generate_user_token(db: Session, form_data: OAuth2PasswordRequestForm) -> tuple[str, str]:
+    """
+    Authenticate a user and generate access and refresh token
+    """
+
+    user = authenticate_user(db, form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Nombre de usuario o contraseña incorrectos",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    if not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Usuario desactivado",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    refresh_token_expires = timedelta(hours=settings.REFRESH_TOKEN_EXPIRE_HOURS)
+
+    access_token, refresh_token = generate_and_store_tokens(
+        db, user, access_token_expires, refresh_token_expires
+    )
+
+    return access_token, refresh_token
