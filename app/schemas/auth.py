@@ -73,3 +73,10 @@ class RefreshTokenRequest(BaseModel):
 class PublicKeyResponse(BaseModel):
     """Schema for public key response"""
     public_key: str
+
+class UserUpdateResponse(BaseModel):
+    """
+    Schema for user update response
+    """
+    message: str
+    user: UserInDB
